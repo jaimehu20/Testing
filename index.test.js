@@ -142,7 +142,7 @@ describe("Occupancy Percentage Method - Room Test", () => {
     })
 })
 
- describe("Total Occupancy Percentage Method - Room Test", () => {
+ describe("Total Occupancy Percentage Static Method - Room Test", () => {
     test("Return total occupancy percentage for all rooms is 0%", () => {
         const Room1 = new Room({
             name: "Habitacion 112",
@@ -259,6 +259,95 @@ describe("Occupancy Percentage Method - Room Test", () => {
         expect(Room.totalOccupancyPercentage(rooms, "2024/08/01", "2024/08/30")).toBe(100)
     })
 }) 
+
+describe("Available Room Static Method - Room Test", () => {
+    test("No available Room", () => {
+        const Room1 = new Room({
+            name: "Habitación 112",
+            bookings: [],
+            rate: 10,
+            discount: 10,
+        })
+        const Room2 = new Room({
+            name: "Habitación 113",
+            bookings: [],
+            rate: 10,
+            discount: 10,
+        })
+        const Room3 = new Room({
+            name: "Habitación 114",
+            bookings: [],
+            rate: 10,
+            discount: 10,
+        })
+        Room1.addBooking({ checkIn: "2024/01/01", checkOut: "2024/01/15", guestName: "Juan" });
+        Room1.addBooking({ checkIn: "2024/01/21", checkOut: "2024/01/26", guestName: "Jose" });
+        Room2.addBooking({ checkIn: "2024/03/07", checkOut: "2024/03/19", guestName: "Maria" });
+        Room2.addBooking({ checkIn: "2024/03/19", checkOut: "2024/03/30", guestName: "Alejandra" });
+        Room3.addBooking({ checkIn: "2024/05/05", checkOut: "2024/05/10", guestName: "Ernesto" });
+        Room3.addBooking({ checkIn: "2024/05/15", checkOut: "2024/05/21", guestName: "Estela" });
+        const rooms = [Room1, Room2, Room3]
+        expect(Room.availableRooms(rooms, "2024/01/01", "2024/05/21")).toEqual(expect.arrayContaining([]));
+    })
+
+    test("Some rooms available", () => {
+        const Room1 = new Room({
+            name: "Ladelut",
+            bookings: [],
+            rate: 10,
+            discount: 10,
+        })
+        const Room2 = new Room({
+            name: "Ladelutes",
+            bookings: [],
+            rate: 10,
+            discount: 10,
+        })
+        const Room3 = new Room({
+            name: "Ladelutesing",
+            bookings: [],
+            rate: 10,
+            discount: 10,
+        })
+        Room1.addBooking({ checkIn: "2024/01/01", checkOut: "2024/01/15", guestName: "Juan", Room: Room1 });
+        Room1.addBooking({ checkIn: "2024/01/21", checkOut: "2024/01/26", guestName: "Jose", Room: Room1 });
+        Room2.addBooking({ checkIn: "2024/03/07", checkOut: "2024/03/19", guestName: "Maria", Room: Room2 });
+        Room2.addBooking({ checkIn: "2024/03/19", checkOut: "2024/03/30", guestName: "Alejandra", Room: Room2 });
+        Room3.addBooking({ checkIn: "2024/05/05", checkOut: "2024/05/10", guestName: "Ernesto", Room: Room3 });
+        Room3.addBooking({ checkIn: "2024/05/15", checkOut: "2024/05/21", guestName: "Estela", Room: Room3 });
+        const rooms = [Room1, Room2, Room3]
+        expect(Room.availableRooms(rooms, "2024/01/01", "2024/01/26")).not.toEqual(expect.arrayContaining(rooms));
+    })
+
+    test("All rooms available", () => {
+        const Room1 = new Room({
+            name: "Ladelut",
+            bookings: [],
+            rate: 10,
+            discount: 10,
+        })
+        const Room2 = new Room({
+            name: "Ladelutes",
+            bookings: [],
+            rate: 10,
+            discount: 10,
+        })
+        const Room3 = new Room({
+            name: "Ladelutesing",
+            bookings: [],
+            rate: 10,
+            discount: 10,
+        })
+        Room1.addBooking({ checkIn: "2024/01/01", checkOut: "2024/01/15", guestName: "Juan", Room: Room1 });
+        Room1.addBooking({ checkIn: "2024/01/21", checkOut: "2024/01/26", guestName: "Jose", Room: Room1 });
+        Room2.addBooking({ checkIn: "2024/03/07", checkOut: "2024/03/19", guestName: "Maria", Room: Room2 });
+        Room2.addBooking({ checkIn: "2024/03/19", checkOut: "2024/03/30", guestName: "Alejandra", Room: Room2 });
+        Room3.addBooking({ checkIn: "2024/05/05", checkOut: "2024/05/10", guestName: "Ernesto", Room: Room3 });
+        Room3.addBooking({ checkIn: "2024/05/15", checkOut: "2024/05/21", guestName: "Estela", Room: Room3 });
+        const rooms = [Room1, Room2, Room3]
+        expect(Room.availableRooms(rooms, "2025/01/01", "2025/01/15")).toEqual(expect.arrayContaining(rooms));
+    })
+})
 
 
 

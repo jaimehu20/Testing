@@ -44,6 +44,10 @@ class Room  {
         rooms.forEach(room => {totalPercentage += room.occupancyPercentage(startDate, endDate)});
         return Math.round((totalPercentage) / rooms.length);
     }
+    static availableRooms(rooms, startDate, endDate){
+        let availableRooms = rooms.filter((room) => room.occupancyPercentage(startDate, endDate) === 0);
+        return availableRooms;
+    }
 
 }
 
@@ -55,6 +59,9 @@ class Booking {
         this.checkout = checkout;
         this.discount = discount;
         this.room = room;
+    }
+    getFee(){
+        
     }
 };
 
