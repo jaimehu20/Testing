@@ -31,19 +31,21 @@ class Room  {
         let percent;
         let prueba = [];
         let newArray;
-
         this.bookings.map((date) => {
-            prueba.push(rangeDates(date.checkIn, date.checkOut).flat());
+            prueba.push(rangeDates(date.checkIn, date.checkOut));
         })
         newArray = prueba.flat()
         newArray.map((date) => {if (dateRange.includes(date)) daysOccupied++})
-        percent = ((daysOccupied / dateRange.length) * 100).toFixed(0);
+        percent = ((daysOccupied / dateRange.length) * 100);
         return percent 
-} 
+    }
+    static totalOccupancyPercentage(rooms, startDate, endDate){
+        let totalPercentage = 0;
+        rooms.forEach(room => {totalPercentage += room.occupancyPercentage(startDate, endDate)});
+        return Math.round((totalPercentage) / rooms.length);
+    }
 
 }
-
-
 
 class Booking {
     constructor({name, email, checkin, checkout, discount, room}){
@@ -58,4 +60,3 @@ class Booking {
 
 
 module.exports = {Room, Booking};
-
