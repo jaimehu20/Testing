@@ -43,17 +43,17 @@ export class Room implements RoomInterface  {
         this.discount = discount
     }
     
-    isOcuppied(date){
+    isOcuppied(date : string){
         for (let i = 0; i < this.bookings.length; i++){
             if (date >= this.bookings[i].checkin && date < this.bookings[i].checkout)
             return true
         }
         return false
     }
-    occupancyPercentage(startDate, endDate){
-        let daysOccupied = 0;
+    occupancyPercentage(startDate : string, endDate: string){
+        let daysOccupied: number = 0;
         let dateRange = rangeDates(startDate, endDate);
-        let percent;
+        let percent : number;
         let prueba : object[] = [];
         let newArray;
         this.bookings.map((date) => {
@@ -64,12 +64,12 @@ export class Room implements RoomInterface  {
         percent = ((daysOccupied / dateRange.length) * 100);
         return percent 
     }
-    static totalOccupancyPercentage(rooms, startDate, endDate){
-        let totalPercentage = 0;
+    static totalOccupancyPercentage(rooms, startDate : string, endDate: string){
+        let totalPercentage: number = 0;
         rooms.forEach(room => {totalPercentage += room.occupancyPercentage(startDate, endDate)});
         return Math.round((totalPercentage) / rooms.length);
     }
-    static availableRooms(rooms, startDate, endDate){
+    static availableRooms(rooms, startDate: string, endDate: string){
         let availableRooms = rooms.filter((room) => room.occupancyPercentage(startDate, endDate) === 0);
         return availableRooms;
     }
